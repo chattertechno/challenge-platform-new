@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Login = () => {
+const SignUp = () => {
   const styles = useStyles()
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -54,6 +54,7 @@ const Login = () => {
 
   React.useEffect(() => {
     const mnemonic = getMnemonic()
+    console.log(mnemonic)
     getDashAccount(mnemonic)
       .then((account) => {
         setAccountInfo(account)
@@ -68,6 +69,7 @@ const Login = () => {
         setAccountCreated(true)
       })
       .catch((e) => {
+        console.log(e)
         toast.error(e.toString())
       })
   }, [])
@@ -81,6 +83,7 @@ const Login = () => {
   const handleConfirmChange = React.useCallback(({ target: { value } }) => {
     setConfirm(value)
   }, [])
+
   const handleCreate = React.useCallback(async () => {
     try {
       // const id = await registerIdentity(getMnemonic())
@@ -105,12 +108,7 @@ const Login = () => {
   }, [username, password, mutate, accountInfo, history])
 
   const isCreateDisabled = React.useMemo(() => {
-    return (
-      !username ||
-      !password ||
-      password !== confirm ||
-      !accountInfo.balance?.confirmed
-    )
+    return !username || !password || password !== confirm
   }, [password, confirm, username, accountInfo])
 
   return (
@@ -164,4 +162,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUp
