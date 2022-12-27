@@ -3,14 +3,14 @@ import { Client } from 'dash'
 export const getDashAccount = async (mnemonic) => {
   console.log(mnemonic)
   const client = new Client({
-    // network: 'testnet',
-    seeds: [
-      {
-        host: 'seed-1.testnet.networks.dash.org',
-        httpPort: 3000,
-        grpcPort: 3010,
-      },
-    ],
+    network: 'testnet',
+    // seeds: [
+    //   {
+    //     host: 'seed-1.testnet.networks.dash.org',
+    //     httpPort: 3000,
+    //     grpcPort: 3010,
+    //   },
+    // ],
     wallet: {
       mnemonic,
       offlineMode: !mnemonic ? true : false,

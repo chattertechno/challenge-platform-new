@@ -57,7 +57,7 @@ const Login = () => {
     }
     mutate(
       {
-        identity: identity,
+        username: identity,
         password,
       },
       {
@@ -93,7 +93,7 @@ const Login = () => {
         <TextField
           className={styles.textInput}
           variant='outlined'
-          label='Identity'
+          label='Username'
           value={identity}
           onChange={handleIdentityChange}
         />
