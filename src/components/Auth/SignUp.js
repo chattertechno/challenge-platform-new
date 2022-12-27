@@ -108,12 +108,7 @@ const SignUp = () => {
   }, [username, password, mutate, accountInfo, history])
 
   const isCreateDisabled = React.useMemo(() => {
-    return (
-      !username ||
-      !password ||
-      password !== confirm ||
-      !accountInfo.balance?.confirmed
-    )
+    return !username || !password || password !== confirm
   }, [password, confirm, username, accountInfo])
 
   return (
