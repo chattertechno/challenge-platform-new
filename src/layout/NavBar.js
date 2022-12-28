@@ -48,6 +48,10 @@ const NavBar = () => {
     history.push(`/profile`)
     handleClose()
   }, [handleClose, history])
+  const handleDashboard = React.useCallback(() => {
+    history.push(`/dashboard`)
+    handleClose()
+  }, [history, handleClose])
 
   const handleLogout = React.useCallback(() => {
     logOut()
@@ -105,6 +109,7 @@ const NavBar = () => {
                 open={open}
                 onClose={handleClose}
               >
+                <MenuItem onClick={handleDashboard}>Dashboard</MenuItem>
                 <MenuItem onClick={handleProfile}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>Log out</MenuItem>
               </Menu>

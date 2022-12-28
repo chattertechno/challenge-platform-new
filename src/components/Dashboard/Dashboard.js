@@ -9,7 +9,7 @@ import PastParticipated from './PastParticipated'
 import { getUser } from 'services/user'
 import PastCoordinated from './PastCoordinated'
 import CurrentlyParticipated from './CurrentlyParticipated'
-import { TEST_DATA } from '../../shared/test'
+//import { TEST_DATA } from '../../shared/test'
 import CurrentlyCoordinated from './CurrentlyCoordinated'
 import UpcomingParticipated from './UpcomingParticipated'
 import UpcomingCoordinated from './UpcomingCoordinated'
@@ -55,9 +55,10 @@ const Dashboard = () => {
     mutateGetChallenges(
       {},
       {
-        onSuccess: () => {
-          // setChallenges(data.data)
-          setChallenges(TEST_DATA)
+        onSuccess: ({ data }) => {
+          console.log(data)
+          setChallenges(data.data)
+          //setChallenges(TEST_DATA)
           setLoading(false)
         },
         onError: () => {

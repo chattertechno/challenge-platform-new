@@ -11,6 +11,7 @@ import { convertFromUTC } from 'utils/date'
 import PageWrapper from '../common/PageWrapper/PageWrapper'
 
 export default function UpcomingCoordinated(props) {
+  // console.log(props)
   const { user, challenges } = props
 
   const [liveTimes, setLiveTimes] = useState({})
