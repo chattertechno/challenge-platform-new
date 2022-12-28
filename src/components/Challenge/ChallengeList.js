@@ -7,13 +7,14 @@ import { getChallenges } from 'services/challenge'
 import { useHistory } from 'react-router'
 import { useAppState } from '../../context/stateContext'
 import { convertFromUTC } from 'utils/date'
+import { TEST_DATA } from '../../shared/test'
 
 export default function ChallengeList() {
   const history = useHistory()
 
   const { mutate: mutateGetChallenges } = useMutation(getChallenges)
   const [loading, setLoading] = React.useState(true)
-  const [challenges, setChallenges] = React.useState([])
+  const [challenges, setChallenges] = React.useState(TEST_DATA)
   const [filteredData, setFilteredData] = React.useState([])
 
   const { currentUser, useFetchUser } = useAppState()
@@ -77,6 +78,8 @@ export default function ChallengeList() {
       }
       result.push(challenge.coordinator)
     })
+    console.log(result)
+    //setLoading(false)
     return result
   }, [challenges])
 
