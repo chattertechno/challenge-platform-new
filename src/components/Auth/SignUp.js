@@ -69,7 +69,6 @@ const SignUp = () => {
         setAccountCreated(true)
       })
       .catch((e) => {
-        console.log(e)
         toast.error(e.toString())
       })
   }, [])

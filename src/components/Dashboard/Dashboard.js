@@ -56,7 +56,6 @@ const Dashboard = () => {
       {},
       {
         onSuccess: ({ data }) => {
-          console.log(data)
           setChallenges(data.data)
           //setChallenges(TEST_DATA)
           setLoading(false)
