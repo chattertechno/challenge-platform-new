@@ -20,7 +20,7 @@
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
     "express": "^4.17.1",
-    "dash": "^3.20.3",
+    "dash": "^3.23.0",
     "date-fns": "^2.23.0",
     "formik": "^2.2.9",
     "http": "^0.0.1-security",

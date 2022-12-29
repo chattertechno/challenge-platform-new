@@ -30,6 +30,7 @@ import {
 import { toast } from 'react-toastify'
 import { useAppState } from '../../context/stateContext'
 import { convertDateToUTCString } from 'utils/date'
+import { createDashEscrow } from 'utils/dash'
 
 export const CREATE_MODE = 0
 export const EDIT_MODE = 1
@@ -109,41 +110,49 @@ const EditChallenge = () => {
   const handleSubmit = useCallback(
     (values) => {
       setDisable(true)
-
-      const data = {
-        ...values,
-        coordinator: currentUser.username,
-        start_date: convertDateToUTCString(values.start_date),
-        end_date: convertDateToUTCString(values.end_date),
-        goal_threshold: `${values.goal_threshold}`,
-        goal_increments: `${values.goal_increments}`,
-      }
-      if (mode === CREATE_MODE) {
-        mutateCreateChallenge(data, {
-          onSuccess: () => {
-            setDisable(false)
-            history.push('/challenges')
-          },
-          onError: () => {
-            setDisable(false)
-            toast.error(`Can't create a challenge.`)
-          },
-        })
-      } else {
-        mutateUpdateChallenge(
-          { id, data },
-          {
-            onSuccess: () => {
-              setDisable(false)
-              history.push('/challenges')
-            },
-            onError: () => {
-              setDisable(false)
-              toast.error(`Can't update the challenge.`)
-            },
+      createDashEscrow()
+        .then((dataEscrow) => {
+          console.log(dataEscrow)
+          const data = {
+            ...values,
+            coordinator: currentUser.username,
+            mnemonic: dataEscrow.mnemonic,
+            identity: dataEscrow.address.address,
+            start_date: convertDateToUTCString(values.start_date),
+            end_date: convertDateToUTCString(values.end_date),
+            goal_threshold: `${values.goal_threshold}`,
+            goal_increments: `${values.goal_increments}`,
           }
-        )
-      }
+          if (mode === CREATE_MODE) {
+            mutateCreateChallenge(data, {
+              onSuccess: () => {
+                setDisable(false)
+                history.push('/challenges')
+              },
+              onError: () => {
+                setDisable(false)
+                toast.error(`Can't create a challenge.`)
+              },
+            })
+          } else {
+            mutateUpdateChallenge(
+              { id, data },
+              {
+                onSuccess: () => {
+                  setDisable(false)
+                  history.push('/challenges')
+                },
+                onError: () => {
+                  setDisable(false)
+                  toast.error(`Can't update the challenge.`)
+                },
+              }
+            )
+          }
+        })
+        .catch(() => {
+          alert('Cant Create New challenge;')
+        })
     },
     [
       currentUser,

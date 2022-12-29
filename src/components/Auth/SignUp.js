@@ -54,7 +54,7 @@ const SignUp = () => {
 
   React.useEffect(() => {
     const mnemonic = getMnemonic()
-    console.log(mnemonic)
+    //console.log(mnemonic)
     getDashAccount(mnemonic)
       .then((account) => {
         setAccountInfo(account)
@@ -86,11 +86,13 @@ const SignUp = () => {
   const handleCreate = React.useCallback(async () => {
     try {
       // const id = await registerIdentity(getMnemonic())
+      const mnemonic = getMnemonic()
       mutate(
         {
           username,
           password,
           identity: accountInfo.address,
+          mnemonic,
         },
         {
           onError: (error) => {

@@ -1,7 +1,7 @@
 import { Client } from 'dash'
 
 export const getDashAccount = async (mnemonic) => {
-  console.log(mnemonic)
+  //console.log(mnemonic)
   const client = new Client({
     network: 'testnet',
     // seeds: [
@@ -12,14 +12,11 @@ export const getDashAccount = async (mnemonic) => {
     //   },
     // ],
     wallet: {
-      mnemonic,
-      offlineMode: !mnemonic ? true : false,
-      unsafeOptions: {
-        skipSynchronizationBeforeHeight: 650000,
-      },
+      mnemonic: mnemonic,
+      offlineMode: true,
     },
   })
-
+  //console.log('Im here and working')
   const account = await client.getWalletAccount()
   return {
     address: account.getUnusedAddress().address,
@@ -35,7 +32,7 @@ export const registerIdentity = async (mnemonic) => {
   const client = new Client({
     network: 'testnet',
     wallet: {
-      mnemonic,
+      mnemonic: mnemonic,
       unsafeOptions: {
         skipSynchronizationBeforeHeight: 650000,
       },
@@ -51,4 +48,24 @@ export const registerIdentity = async (mnemonic) => {
     identity = (identity || {}).id
   }
   return identity
+}
+
+export const createDashEscrow = async () => {
+  const clientOpts = {
+    network: 'testnet',
+    wallet: {
+      mnemonic: null,
+      offlineMode: true,
+    },
+  }
+  const client = new Client(clientOpts)
+
+  const account = await client.getWalletAccount()
+  const mnemonic = client.wallet.exportWallet()
+  const address = account.getUnusedAddress()
+
+  return {
+    mnemonic,
+    address,
+  }
 }
