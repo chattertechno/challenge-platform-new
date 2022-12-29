@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react'
 import {
   List,
   ListItem,
@@ -8,7 +9,8 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import PropTypes from 'prop-types'
-import { useMemo } from 'react'
+
+import { useHistory } from 'react-router'
 import { convertFromUTC } from 'utils/date'
 import PageWrapper from '../common/PageWrapper/PageWrapper'
 
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function PastCoordinated(props) {
+  const history = useHistory()
   const classes = useStyles()
   const { user, challenges } = props
 
@@ -57,6 +60,14 @@ export default function PastCoordinated(props) {
         : 0,
     [data]
   )
+  //console.log(data)
+  const onOpen = React.useCallback(
+    (id) => {
+      //console.log(id)
+      history.push(`/challenge/${id}`)
+    },
+    [history]
+  )
 
   return (
     <PageWrapper title='Past Coordinated Challenges'>
@@ -87,19 +98,26 @@ export default function PastCoordinated(props) {
           <List>
             {data.map((item, index) => (
               <ListItem button key={`challenge-${index}`}>
-                <ListItemText primary={item.name} />
                 {item.success ? (
-                  <Chip
-                    label='Succeed'
-                    color='primary'
-                    className={classes.chip}
-                  />
+                  <>
+                    <ListItemText primary={item.name} />
+                    <Chip
+                      label='Succeed'
+                      color='primary'
+                      className={classes.chip}
+                    />
+                  </>
                 ) : (
-                  <Chip
-                    label='Failed'
-                    color='secondary'
-                    className={classes.chip}
-                  />
+                  <>
+                    <ListItemText primary={item.name} />
+                    <Chip
+                      label='Failed'
+                      color='secondary'
+                      //variant='outlined'
+                      className={classes.chip}
+                      onClick={() => onOpen(item._id)}
+                    />
+                  </>
                 )}
               </ListItem>
             ))}
