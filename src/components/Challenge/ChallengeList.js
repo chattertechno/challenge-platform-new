@@ -78,7 +78,7 @@ export default function ChallengeList() {
       }
       result.push(challenge.coordinator)
     })
-    console.log(result)
+    //console.log(result)
     //setLoading(false)
     return result
   }, [challenges])

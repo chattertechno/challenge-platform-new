@@ -51,7 +51,7 @@ const validationSchema = Yup.object().shape({
   goal_threshold: Yup.number()
     .min(0, 'Min value 0.')
     .required('Goal Threshold is required'),
-  goal_increments: Yup.number()
+  goal_increaments: Yup.number()
     .min(0, 'Min value 0.')
     .required('Goal Increments is required'),
   start_date: Yup.date().required('Start Date is required'),
@@ -66,7 +66,7 @@ const defaultValues = {
   description: '',
   goal: 'count',
   goal_threshold: 0,
-  goal_increments: 1,
+  goal_increaments: 1,
   start_date: new Date(),
   end_date: new Date(),
   status: 'open',
@@ -110,49 +110,75 @@ const EditChallenge = () => {
   const handleSubmit = useCallback(
     (values) => {
       setDisable(true)
-      createDashEscrow()
-        .then((dataEscrow) => {
-          console.log(dataEscrow)
-          const data = {
-            ...values,
-            coordinator: currentUser.username,
-            mnemonic: dataEscrow.mnemonic,
-            identity: dataEscrow.address.address,
-            start_date: convertDateToUTCString(values.start_date),
-            end_date: convertDateToUTCString(values.end_date),
-            goal_threshold: `${values.goal_threshold}`,
-            goal_increments: `${values.goal_increments}`,
-          }
-          if (mode === CREATE_MODE) {
-            mutateCreateChallenge(data, {
-              onSuccess: () => {
-                setDisable(false)
-                history.push('/challenges')
-              },
-              onError: () => {
-                setDisable(false)
-                toast.error(`Can't create a challenge.`)
-              },
-            })
-          } else {
-            mutateUpdateChallenge(
-              { id, data },
-              {
+      console.log(mode)
+      if (mode === CREATE_MODE) {
+        createDashEscrow()
+          .then((dataEscrow) => {
+            console.log(dataEscrow)
+            const data = {
+              ...values,
+              coordinator: currentUser.username,
+              mnemonic: dataEscrow.mnemonic,
+              identity: dataEscrow.address.address,
+              start_date: convertDateToUTCString(values.start_date),
+              end_date: convertDateToUTCString(values.end_date),
+              goal_threshold: `${values.goal_threshold}`,
+              goal_increaments: `${values.goal_increaments}`,
+            }
+            if (mode === CREATE_MODE) {
+              mutateCreateChallenge(data, {
                 onSuccess: () => {
                   setDisable(false)
                   history.push('/challenges')
                 },
                 onError: () => {
                   setDisable(false)
-                  toast.error(`Can't update the challenge.`)
+                  toast.error(`Can't create a challenge.`)
                 },
-              }
-            )
+              })
+            } else {
+              mutateUpdateChallenge(
+                { id, data },
+                {
+                  onSuccess: () => {
+                    setDisable(false)
+                    history.push('/challenges')
+                  },
+                  onError: () => {
+                    setDisable(false)
+                    toast.error(`Can't update the challenge.`)
+                  },
+                }
+              )
+            }
+          })
+          .catch(() => {
+            alert('Cant Create New challenge;')
+          })
+      } else {
+        console.log(values)
+        const data = {
+          ...values,
+          coordinator: currentUser.username,
+          start_date: convertDateToUTCString(values.start_date),
+          end_date: convertDateToUTCString(values.end_date),
+          goal_threshold: `${values.goal_threshold}`,
+          goal_increaments: `${values.goal_increaments}`,
+        }
+        mutateUpdateChallenge(
+          { id, data },
+          {
+            onSuccess: () => {
+              setDisable(false)
+              history.push('/challenges')
+            },
+            onError: () => {
+              setDisable(false)
+              toast.error(`Can't update the challenge.`)
+            },
           }
-        })
-        .catch(() => {
-          alert('Cant Create New challenge;')
-        })
+        )
+      }
     },
     [
       currentUser,
@@ -330,15 +356,17 @@ const EditChallenge = () => {
                           <TextField
                             label='Goal Increments'
                             variant='outlined'
-                            name='goal_increments'
+                            name='goal_increaments'
                             type='number'
                             error={Boolean(
-                              touched.goal_increments && errors.goal_increments
+                              touched.goal_increaments &&
+                                errors.goal_increaments
                             )}
                             helperText={
-                              touched.goal_increments && errors.goal_increments
+                              touched.goal_increaments &&
+                              errors.goal_increaments
                             }
-                            value={values.goal_increments}
+                            value={values.goal_increaments}
                             onChange={handleChange}
                           />
                         </Grid>

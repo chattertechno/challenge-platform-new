@@ -34,6 +34,7 @@ export default function ChallengeDetail() {
   const { currentUser, useFetchUser } = useAppState()
   const { id } = useParams()
   const { mutate: mutateGetChallenge } = useMutation(getChallenge)
+
   const { mutate: mutateJoinChallenge } = useMutation(joinChallenge)
 
   const [challenge, setChallenge] = useState({
